@@ -18,7 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    String url = "http://emc.eawelectro.com/";
+    String url = "http://10.0.2.2/2020_web/public";
     ProgressBar spinner;
     WebView webView;
     @Override
@@ -58,15 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                webView.loadUrl("javascript:(function() { " +
-                        "document.getElementById('navbar').value='"+EditText.getText()+"'; " +
-                        "document.getElementById('inputID').value='"+EditText.getText()+"'; " +
-                        "})()");
-            }
-        });
+
+
         webView.loadUrl(url);
     }
 
@@ -110,6 +103,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_home) {
             // Handle the home action
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.getElementById('navbar')[0].href; " +
+                            "document.getElementById('inputID').value=''; " +
+                            "})()");
+                }
+            });
             loadURL(url+"/home");
 
         } else if (id == R.id.nav_product) {
