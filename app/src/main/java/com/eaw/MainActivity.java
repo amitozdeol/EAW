@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         webView.setWebChromeClient(new WebChromeClient(){
             public void onProgressChanged(WebView view, int progress) {
                 spinner.setProgress(progress);
-                if(progress >= 30) {
+                if(progress >= 80) {
                     spinner.setVisibility(View.GONE);
                 }
             }
