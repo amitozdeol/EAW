@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,9 +36,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<String> navbarNAME = new ArrayList<String>();
     ArrayList<String> navbar_account_URL = new ArrayList<String>();
     ArrayList<String> navbar_account_NAME = new ArrayList<String>();
+    ArrayList<String> navbar_building_NAME = new ArrayList<String>();
+    ArrayList<String> navbar_building_URL = new ArrayList<String>();
     String username;
     Boolean toggleON;
     Menu menu;
+    SubMenu subMenu;
     NavigationView navigationView;
     ProgressBar spinner;
     WebView webView;
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 menu = navigationView.getMenu();
                 menu.clear();
+                subMenu.clear();
                 toggleON = isChecked;
                 if (isChecked){
                     for (int i=0;i<navbar_account_NAME.size();i++) {
@@ -84,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }else{
                     for (int i=0;i<navbarNAME.size();i++) {
                         menu.add(R.id.nav_group,i,Menu.NONE,navbarNAME.get(i));
+                    }
+                    for (int i=0;i<navbar_building_NAME.size();i++) {
+                        subMenu.add(R.id.nav_group,i, Menu.NONE,navbar_building_NAME.get(i));
                     }
                 }
             }
@@ -170,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     loadURL(navbarURL.get(i));
                 }
             }
+            for (int i=0;i<navbar_building_URL.size();i++){
+                if (id==i){
+                    loadURL(navbar_building_URL.get(i));
+                }
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -186,17 +199,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             for (int i=0;i<navbarNAME.size();i++) {
                 menu.add(R.id.nav_group,i,Menu.NONE,navbarNAME.get(i));
             }
+            subMenu = menu.addSubMenu("Buildings");
+            subMenu.clear();
+            for (int i = 0; i < navbar_building_NAME.size(); i++) {
+                subMenu.add(R.id.nav_group,i, subMenu.NONE,navbar_building_NAME.get(i));
+            }
             textView.setText(username);
         }
     }
 
     private class WebAppInterface {
         @JavascriptInterface
-        public void sendData(String[] data, String[] data_dropdown) {
+        public void sendData(String[] data, String[] data_dropdown, String[] data_building_dropdown) {
             navbarNAME.clear();
             navbarURL.clear();
             navbar_account_NAME.clear();
             navbar_account_URL.clear();
+            navbar_building_NAME.clear();
+            navbar_building_URL.clear();
             username = data[0];
             System.out.println(data[0]);
             //Get the string value to process
@@ -209,6 +229,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navbar_account_URL.add(data_dropdown[i]);
                 i++;
                 navbar_account_NAME.add(data_dropdown[i]);
+            }
+            for (int i=0; i<data_building_dropdown.length; i++){
+                navbar_building_URL.add(data_building_dropdown[i]);
+                i++;
+                navbar_building_NAME.add(data_building_dropdown[i]);
             }
         }
     }
