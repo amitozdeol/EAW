@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 menu.add(R.id.nav_group,i,Menu.NONE,navbarNAME.get(i));
             }
             subMenu = menu.addSubMenu("Buildings");
-            subMenu.clear();
+            //subMenu.clear();
             for (int i = 0; i < navbar_building_NAME.size(); i++) {
                 subMenu.add(R.id.nav_group,i, subMenu.NONE,navbar_building_NAME.get(i));
             }
